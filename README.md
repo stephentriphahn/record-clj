@@ -29,6 +29,10 @@ First hurdle- The library mentioned above only lazily parses a string, but does 
  that even in the case of a large file, we have to bring the file into memory as a string. We can stream the file, but 
  that stream must remain open while it gets parsed, and `with-open` closes the stream before the lazy sequence is 
  consumed.  
+ 
+Finally got basic parsing of multiple different file types into one set of data before streams close.
+For now, I am manually calling `.close` on all readers (instead of using with-open), need to clean
+that up.
 
 ...
 

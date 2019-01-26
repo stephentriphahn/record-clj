@@ -17,7 +17,18 @@
   (let [[fields & data] (line-seq file-reader)] ;; lazy file read by line
     (map (partial line->map fields dillimeter) data)))
 
+;;todo configure these, not hard coded mapping
+(def ext->delimiter {"ssv" #" "
+                     "csv" #","
+                     "psv" #"|"})
+
+(defn- delimiter
+  [path]
+  (ext->delimiter (peek (str/split path #"\."))))
+
 (defn parse-reader
-  "Given a reader and specific delimeter, parses and returns the data as a seq of maps."
-  [rdr delimeter]
-  (parse rdr delimeter))
+  "Given a reader and specific delimiter, parses and returns the data as a seq of maps."
+  [rdr-fn path]
+  (let [rdr (clojure.java.io/reader path)]
+    (rdr-fn rdr)
+    (parse rdr (delimiter path))))
