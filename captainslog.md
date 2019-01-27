@@ -30,3 +30,11 @@ function to sort by LastName in ascending order.
 
 I am thinking of passing in a render-function to the render multi-method.  That would make it more testable, and would 
 separate the data sorting logic and the rendering (println) logic.  
+
+Moving on to wiring everything together. The requirements specify a REST api 
+be built as well in the same codebase.  Should the `-main` function run the 
+logic to display the veiws on the terminla AND start up the web server? Or 
+should this be a flag when running the app from the command line?  for now, I
+ decided to have the main function read the files and output all 3 views of 
+ the data, and then start the web server.  This logic should be easy to 
+ change later.

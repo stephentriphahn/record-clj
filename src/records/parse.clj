@@ -25,10 +25,11 @@
 (defn- delimiter
   [path]
   (ext->delimiter
-    (peek (str/split path #"\.")))) ;; peek is more efficient than last for vectors
+    (peek (str/split path #"\.")))) ;; peek is more efficient than last on vec
 
 (defn parse-file
-  "Given a reader and specific delimiter, parses and returns the data as a seq of maps."
+  "Given a reader and specific delimiter, parses and returns the data as a seq
+   of maps."
   [rdr-fn path]
   (let [rdr (clojure.java.io/reader path)]
     (rdr-fn rdr)
