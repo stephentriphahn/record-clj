@@ -3,19 +3,19 @@
   (:import (java.io BufferedReader)))
 
 (defn- split-trim
-  [s dillemeter]
-  (map str/trim (str/split s dillemeter)))
+  [s delimiter]
+  (map str/trim (str/split s delimiter)))
 
 (defn line->map
-  [fields dillimeter line]
-  (zipmap (split-trim fields dillimeter)
-          (split-trim line dillimeter)))
+  [fields delimiter line]
+  (zipmap (split-trim fields delimiter)
+          (split-trim line delimiter)))
 
 (defn parse
   "Takes the string contents of a file and returns a vector of maps"
-  [file-reader dillimeter]
-  (let [[fields & data] (line-seq file-reader)] ;; lazy file read by line
-    (map (partial line->map fields dillimeter) data)))
+  [file-reader delimiter]
+  (let [[fields & data-lines] (line-seq file-reader)] ;; lazy file read by line
+    (map (partial line->map fields delimiter) data-lines)))
 
 ;;todo configure these, not hard coded mapping
 (def ext->delimiter {"ssv" #" "
@@ -24,9 +24,10 @@
 
 (defn- delimiter
   [path]
-  (ext->delimiter (peek (str/split path #"\."))))
+  (ext->delimiter
+    (peek (str/split path #"\.")))) ;; peek is more efficient than last for vectors
 
-(defn parse-reader
+(defn parse-file
   "Given a reader and specific delimiter, parses and returns the data as a seq of maps."
   [rdr-fn path]
   (let [rdr (clojure.java.io/reader path)]
