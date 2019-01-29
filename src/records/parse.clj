@@ -2,6 +2,9 @@
   (:require [clojure.string :as str])
   (:import (java.io BufferedReader Reader)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;  Line parsing
+
 (defn- split-trim
   [s delimiter]
   (map str/trim (str/split s delimiter)))
@@ -10,6 +13,9 @@
   [fields delimiter line]
   (zipmap (split-trim fields delimiter)
           (split-trim line delimiter)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;  File parsing
 
 (defn parse
   "Takes the string contents of a file and returns a vector of maps"

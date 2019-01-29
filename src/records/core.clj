@@ -15,13 +15,16 @@
         data (map (partial parse/parse-file #(swap! open-readers conj %)) args)
         combined-data (apply concat data)]
     (println "Sorted by gender, then Last Name ascending")
-    (run! print-vals (render/render-by "gender" combined-data))
-    (println "\n\n")
+    (run! print-vals (render/data-by-gender combined-data))
+    (print "\n\n")
+
     (println "Sorted by LastName Descending")
-    (println "\n")
-    (run! print-vals (render/render-by "LastName" combined-data))
-    (println "\n\n")
-    (println "Sorted by Date of birth, ascending.")
-    (println "\n")
-    (run! print-vals (render/render-by "dateofbirth" combined-data))
+    (print "\n")
+    (run! print-vals (render/data-by-lastname combined-data))
+    (print "\n\n")
+
+    (print "Sorted by Date of birth, ascending.")
+    (print "\n")
+    (run! print-vals (render/data-by-dob combined-data))
+
     (run! #(.close ^Reader %) @open-readers)))

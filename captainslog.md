@@ -38,3 +38,15 @@ should this be a flag when running the app from the command line?  for now, I
  decided to have the main function read the files and output all 3 views of 
  the data, and then start the web server.  This logic should be easy to 
  change later.
+ 
+ 
+ 
+ #### Day 3
+ 
+ Realizing that I need a uniform way of validating input files/lines that the
+  REST api and the CLI can both use.  Things break, for example, if one of 
+  the lines in a file does not contain all fields.  Zipmap will not cleanly 
+  associate the fields with the values, leading to an unparsable birthdate, 
+  and NPEs. I think in some cases it is reasonable to fail (user error in the
+   file creation) but we need to fail gracefully and relay a helpful message 
+   to the user. 
