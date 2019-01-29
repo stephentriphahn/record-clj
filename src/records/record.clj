@@ -1,5 +1,7 @@
 (ns records.record)
 
+
+
 (defprotocol RecordsDB
   (save [_ data])
   (get-all [_]))

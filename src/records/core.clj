@@ -5,6 +5,7 @@
   (:import (java.io Reader))
   (:gen-class))
 
+(def print-vals (comp println (partial str/join " ") vals))
 
 (defn -main
   "Opens a file reader and prints out the parsed data...for now."
@@ -13,9 +14,14 @@
   (let [open-readers (atom [])
         data (map (partial parse/parse-file #(swap! open-readers conj %)) args)
         combined-data (apply concat data)]
-    (run! println (render/render-by "gender" combined-data))
+    (println "Sorted by gender, then Last Name ascending")
+    (run! print-vals (render/render-by "gender" combined-data))
     (println "\n\n")
-    (run! println (render/render-by "LastName" combined-data))
+    (println "Sorted by LastName Descending")
+    (println "\n")
+    (run! print-vals (render/render-by "LastName" combined-data))
     (println "\n\n")
-    (run! println (render/render-by "dateofbirth" combined-data))
+    (println "Sorted by Date of birth, ascending.")
+    (println "\n")
+    (run! print-vals (render/render-by "dateofbirth" combined-data))
     (run! #(.close ^Reader %) @open-readers)))

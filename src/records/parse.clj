@@ -1,6 +1,6 @@
 (ns records.parse
   (:require [clojure.string :as str])
-  (:import (java.io BufferedReader)))
+  (:import (java.io BufferedReader Reader)))
 
 (defn- split-trim
   [s delimiter]
@@ -14,13 +14,14 @@
 (defn parse
   "Takes the string contents of a file and returns a vector of maps"
   [file-reader delimiter]
+  {:pre [(instance? Reader file-reader)]}
   (let [[fields & data-lines] (line-seq file-reader)] ;; lazy file read by line
     (map (partial line->map fields delimiter) data-lines)))
 
 ;;todo configure these, not hard coded mapping
 (def ext->delimiter {"ssv" #" "
                      "csv" #","
-                     "psv" #"|"})
+                     "psv" #"\|"})
 
 (defn- delimiter
   [path]
@@ -28,8 +29,8 @@
     (peek (str/split path #"\.")))) ;; peek is more efficient than last on vec
 
 (defn parse-file
-  "Given a reader and specific delimiter, parses and returns the data as a seq
-   of maps."
+  "Given a file path and specific delimiter, parses and returns the data as a
+   seq of maps."
   [rdr-fn path]
   (let [rdr (clojure.java.io/reader path)]
     (rdr-fn rdr)
