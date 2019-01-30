@@ -19,6 +19,15 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  DB, just memory for now, could be expanded on later
 
+(def ^:private mem-db (atom #{}))
+
+(defn connect
+  "Returns mem-db atom. Could be turned into multimethod to dispach on
+   connection string protocols."
+  [cs]
+  (case cs
+    "memory" mem-db))
+
 (defprotocol RecordsDB
   (save [_ data])
   (get-all [_]))
@@ -28,7 +37,7 @@
   (save [this data]
     (swap! this concat data))
   (get-all [this]
-    @this))
+    (set @this)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  Errors
