@@ -29,12 +29,6 @@
         _ (run! (comp (partial save! db) parse/parse) args)
         data (record/get-all db)]
 
-    (println (spec/valid? :records.record/record
-                          {:last-name "Smith"
-                           :first-name "John"
-                           :gender "Male"
-                           :favorite-color "Blue"
-                           :date-of-birth "10/03/1988"}))
     (print-by-gender (render/data-by-gender data))
     (print "\n")
     (print-by-lastname (render/data-by-lastname data))
@@ -42,4 +36,4 @@
     (print-by-dob (render/data-by-dob data))
 
     (println "starting server...")
-    #_(jetty/run-jetty routes/app {:port 8081})))
+    (jetty/run-jetty routes/app {:port 8081})))
