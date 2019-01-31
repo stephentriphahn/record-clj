@@ -22,17 +22,17 @@
 
 (defn last-name
   [record]
-  {:pre [(spec/valid? ::record record)]}
+  {:post [(spec/valid? ::last-name (:last-name record))]}
   (:last-name record))
 
 (defn date-of-birth
   [record]
-  {:pre [(spec/valid? ::record record)]}
+  {:pre [(spec/valid? ::date-of-birth (:date-of-birth record))]}
   (:date-of-birth record))
 
 (defn gender
   [record]
-  {:pre [(spec/valid? ::record record)]}
+  {:pre [(spec/valid? ::gender (:gender record))]}
   (:gender record))
 
 

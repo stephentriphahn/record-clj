@@ -22,6 +22,8 @@
 ;;;  File parsing
 
 (defn find-delimiter
+  "Given a string, finds which delimiter is being used.  Defaults to space,
+   so any malformed data should fail during validation step of parsing."
   [fields]
   (cond
     (re-find #"\|" fields) #"\|"
@@ -29,6 +31,7 @@
     :else #" "))
 
 (defn- keywordize-fields
+  "Turns the fields into keywords to leverage spec validation."
   [fields d]
   (map csk/->kebab-case-keyword (split-trim fields d)))
 
@@ -43,6 +46,8 @@
       data-lines)))
 
 (defn parse
+  "Given a source (file path as a string, or data as an input stream), opens
+   a reader, parses the data, and closes the reader."
   [source]
   {:pre [(or (string? source) (instance? InputStream source))]}
   (with-open [rdr (clojure.java.io/reader source)]

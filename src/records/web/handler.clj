@@ -5,19 +5,29 @@
             [ring.util.response :as response]
             [records.render :as render]))
 
+(def ^:Private bad-request-msg
+  (str "Failed to parse data from your request.  "
+        "Please make sure the data is in the proper format."))
+
 (defn add-record
+  "Tries to parse and add a record from the body of the HTTP request.
+   Assumes the body is a text representation of a parsable file, including
+   the fields on the first line, and the data on the second line. Returns a
+   valid HTTP Ring response."
   [body]
   (let [db (record/connect "memory")]
     (try
-      (println (parse/parse body))
       (record/save db (parse/parse body))
       (response/created "path/to/created/resource")
 
       (catch AssertionError err
-        (response/bad-request "Failed to parse data from your request.
-        Please make sure the data is in the proper format.")))))
+        (-> bad-request-msg
+          (response/bad-request)
+          (response/content-type "text/plain"))))))
 
 (defn get-records-with
+  "Gets all records from the data store, and calls the supplied function on
+   it.  Returns a valid HTTP Ring response."
   [sort-fn]
   (let [db (record/connect "memory")]
     (-> db

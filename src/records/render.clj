@@ -13,10 +13,12 @@
 ;;;  Implementation
 
 (defn- concat-genders
+  "Ensures that females are first and males are second in grouped, sorted data."
   [{:strs [Male Female] :as m}]
   (concat Female Male))
 
 (defn- sort-genders
+  "Given grouped data by gender, sorts each of the map values by last name"
   [data]
   (-> data
       (update "Male" (partial sort-by record/last-name))

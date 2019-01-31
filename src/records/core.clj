@@ -9,7 +9,7 @@
   (:import (java.io Reader FileNotFoundException))
   (:gen-class))
 
-(defn print-vals
+(defn print-vals!
   [label data]
   (let [results (map (comp #(str/join " " %) vals) data)]
     (when (not-empty results)
@@ -17,9 +17,9 @@
       (run! println results)
       (print "\n"))))
 
-(def print-by-gender (partial print-vals "Sorted by Gender"))
-(def print-by-lastname (partial print-vals "Sorted by Last Name"))
-(def print-by-dob (partial print-vals "Sorted by Date of Birth"))
+(def print-by-gender (partial print-vals! "Sorted by Gender"))
+(def print-by-lastname (partial print-vals! "Sorted by Last Name"))
+(def print-by-dob (partial print-vals! "Sorted by Date of Birth"))
 
 (defn save!
   [db data]
