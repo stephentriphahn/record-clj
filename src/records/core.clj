@@ -1,11 +1,11 @@
 (ns records.core
-  (:require [clojure.string :as str]
+  (:require [clojure.spec.alpha :as spec]
+            [clojure.string :as str]
             [ring.adapter.jetty :as jetty]
             [records.parse :as parse]
             [records.record :as record]
             [records.render :as render]
-            [records.web.routes :as routes]
-            [clojure.spec.alpha :as spec])
+            [records.web.routes :as routes])
   (:import (java.io Reader))
   (:gen-class))
 

@@ -2,6 +2,8 @@
   (:require [clojure.test :refer [testing is deftest]]
             [records.record :as record]))
 
+(declare thrown?) ;;appease Intellij
+
 (deftest lens-fn-test
   (testing "valid record"
     (let [record {:first-name "Joe"
@@ -23,9 +25,9 @@
   (testing"invalid record"
     (let [invalid-rec {:middle-name "Jeffrey"
                        :date-of-birth "31/10/19"}]
-      (is (thrown? java.lang.AssertionError (record/last-name invalid-rec)))
-      (is (thrown? java.lang.AssertionError (record/date-of-birth invalid-rec)))
-      (is (thrown? java.lang.AssertionError (record/gender invalid-rec))))))
+      (is (thrown? AssertionError (record/last-name invalid-rec)))
+      (is (thrown? AssertionError (record/date-of-birth invalid-rec)))
+      (is (thrown? AssertionError (record/gender invalid-rec))))))
 
 (deftest mem-db-test
 
