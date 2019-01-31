@@ -35,7 +35,7 @@
 (extend-protocol RecordsDB
   clojure.lang.Atom
   (save [this data]
-    (swap! this concat data))
+    (swap! this into data))
   (get-all [this]
     (set @this)))
 

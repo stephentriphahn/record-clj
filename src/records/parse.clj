@@ -16,7 +16,8 @@
         l (split-trim line delimiter)]
     (if (= (count fs) (count l))
       (zipmap fs l)
-      (throw (ex-info "Invalid line" {:line line})))))
+      (throw
+        (ex-info "Invalid line" {:line line :delimiter l})))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  File parsing
@@ -39,5 +40,8 @@
 (defn from-path
   [path]
   (with-open [rdr (clojure.java.io/reader path)]
-    (doall (parse rdr))))
+    (try
+      (doall (parse rdr))
+      (catch ExceptionInfo e
+        (ex-data e)))))
 

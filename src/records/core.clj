@@ -1,41 +1,22 @@
 (ns records.core
   (:require [clojure.string :as str]
+            [ring.adapter.jetty :as jetty]
             [records.parse :as parse]
             [records.record :as record]
-            [records.render :as render])
+            [records.render :as render]
+            [records.web.routes :as routes])
   (:import (java.io Reader))
   (:gen-class))
 
-(def print-vals (comp println (partial str/join " ") vals))
-
 (defn print-vals
-  [data]
-  (println data))
+  [label data]
+  (let [results (map (comp #(str/join " " %) vals) data)]
+    (println label)
+    (run! println results)))
 
-#_(defn- print-vals
-  [])
-
-#_(defn -main
-  "Opens a file reader and prints out the parsed data...for now."
-  [& args]
-  ;;fixme- storing readers to manually close, with-open closes too early.
-  (let [open-readers (atom [])
-        data (map (partial parse/parse-file #(swap! open-readers conj %)) args)
-        combined-data (apply concat data)]
-    (println "Sorted by gender, then Last Name ascending")
-    (run! print-vals (render/data-by-gender combined-data))
-    (print "\n\n")
-
-    (println "Sorted by LastName Descending")
-    (print "\n")
-    (run! print-vals (render/data-by-lastname combined-data))
-    (print "\n\n")
-
-    (print "Sorted by Date of birth, ascending.")
-    (print "\n")
-    (run! print-vals (render/data-by-dob combined-data))
-
-    (run! #(.close ^Reader %) @open-readers)))
+(def print-by-gender (partial print-vals "Sorted by Gender"))
+(def print-by-lastname (partial print-vals "Sorted by Last Name"))
+(def print-by-dob (partial print-vals "Sorted by Date of Birth"))
 
 (defn save!
   [db data]
@@ -43,5 +24,15 @@
 
 (defn -main
   [& args]
-  (let [data (mapcat #(parse/from-path %) args)]
-    (run! print-vals data)))
+  (let [db (record/connect "memory")
+        _ (run! (comp (partial save! db) parse/from-path) args)
+        data (record/get-all db)]
+
+    (print-by-gender (render/data-by-gender data))
+    (print "\n")
+    (print-by-lastname (render/data-by-lastname data))
+    (print "\n")
+    (print-by-dob (render/data-by-dob data))
+
+    (println "starting server...")
+    (jetty/run-jetty routes/app {:port 8081})))
