@@ -3,11 +3,11 @@
             [records.record :as record]))
 
 (deftest lens-fn-test
-  (let [record {"FirstName" "Joe"
-                "LastName" "Smith"
-                "Gender" "Male"
-                "DateOfBirth" "1/1/2000"
-                "FavoriteColor" "Blue"}]
+  (let [record {:first-name "Joe"
+                :last-name "Smith"
+                :gender "Male"
+                :date-of-birth "1/1/2000"
+                :favorite-color "Blue"}]
 
     (testing "last-name"
       (is (= "Smith" (record/last-name record))

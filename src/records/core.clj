@@ -4,7 +4,8 @@
             [records.parse :as parse]
             [records.record :as record]
             [records.render :as render]
-            [records.web.routes :as routes])
+            [records.web.routes :as routes]
+            [clojure.spec.alpha :as spec])
   (:import (java.io Reader))
   (:gen-class))
 
@@ -28,6 +29,12 @@
         _ (run! (comp (partial save! db) parse/parse) args)
         data (record/get-all db)]
 
+    (println (spec/valid? :records.record/record
+                          {:last-name "Smith"
+                           :first-name "John"
+                           :gender "Male"
+                           :favorite-color "Blue"
+                           :date-of-birth "10/03/1988"}))
     (print-by-gender (render/data-by-gender data))
     (print "\n")
     (print-by-lastname (render/data-by-lastname data))
@@ -35,4 +42,4 @@
     (print-by-dob (render/data-by-dob data))
 
     (println "starting server...")
-    (jetty/run-jetty routes/app {:port 8081})))
+    #_(jetty/run-jetty routes/app {:port 8081})))

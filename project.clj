@@ -4,9 +4,9 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
 
-                 [clojure-csv/clojure-csv "2.0.1"]
+                 [camel-snake-kebab "0.4.0"]
                  [compojure "1.6.1"]
                  [ring/ring-core "1.7.0"]
                  [ring/ring-jetty-adapter "1.6.3"]

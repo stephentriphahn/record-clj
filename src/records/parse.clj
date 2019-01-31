@@ -1,5 +1,6 @@
 (ns records.parse
-  (:require [clojure.string :as str])
+  (:require [camel-snake-kebab.core :as csk]
+            [clojure.string :as str])
   (:import (java.io BufferedReader Reader InputStream)
            (clojure.lang ExceptionInfo)))
 
@@ -11,13 +12,9 @@
   (map str/trim (str/split s delimiter)))
 
 (defn line->map
-  [fields delimiter line]
-  (let [fs (split-trim fields delimiter)
-        l (split-trim line delimiter)]
-    (if (= (count fs) (count l))
-      (zipmap fs l)
-      (throw
-        (ex-info "Invalid line" {:line line :delimiter l})))))
+  [fields line]
+  {:pre [(= (count fields) (count line))]}
+  (zipmap fields line))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  File parsing
@@ -29,19 +26,23 @@
     (re-find #"," fields) #","
     :else #" "))
 
+(defn- keywordize-fields
+  [fields d]
+  (map csk/->kebab-case-keyword (split-trim fields d)))
+
 (defn parse-reader
   "Takes the string contents of a file and returns a vector of maps"
   [file-reader]
   (let [[fields & data-lines] (line-seq file-reader)
-        delimiter (find-delimiter fields)] ;; lazy file read by line
-    (map (partial line->map fields delimiter) data-lines)))
+        del (find-delimiter fields) ;; lazy file read by line
+        parsed-fields (keywordize-fields fields del)]
+    (map
+      (comp #(line->map parsed-fields %) #(split-trim % del))
+      data-lines)))
 
 (defn parse
   [source]
   {:pre [(or (string? source) (instance? InputStream source))]}
   (with-open [rdr (clojure.java.io/reader source)]
-    (try
-      (doall (parse-reader rdr))
-      (catch ExceptionInfo e
-        (ex-data e)))))
+    (doall (parse-reader rdr))))
 
