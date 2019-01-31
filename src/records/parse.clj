@@ -1,6 +1,7 @@
 (ns records.parse
   (:require [camel-snake-kebab.core :as csk]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [clojure.spec.alpha :as spec])
   (:import (java.io BufferedReader Reader InputStream)
            (clojure.lang ExceptionInfo)))
 
@@ -13,7 +14,8 @@
 
 (defn line->map
   [fields line]
-  {:pre [(= (count fields) (count line))]}
+  {:pre [(= (count fields) (count line))]
+   :post [(spec/valid? :records.record/record %)]}
   (zipmap fields line))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

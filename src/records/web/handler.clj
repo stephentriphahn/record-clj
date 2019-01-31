@@ -7,19 +7,21 @@
 
 (defn add-record
   [body]
-  (let [db (record/connect "memory")
-        data (parse/parse body)]
-    (when data
-      (record/save db data)
-      (response/created ""))))
+  (let [db (record/connect "memory")]
+    (try
+      (println (parse/parse body))
+      (record/save db (parse/parse body))
+      (response/created "path/to/created/resource")
+
+      (catch AssertionError err
+        (response/bad-request "Failed to parse data from your request.
+        Please make sure the data is in the proper format.")))))
 
 (defn get-records-with
   [sort-fn]
   (let [db (record/connect "memory")]
-    (or
-      (some-> db
-              (record/get-all)
-              (sort-fn)
-              (response/response)
-              (response/content-type "application/json"))
-      (response/bad-request "No Data Found"))))
+    (-> db
+      (record/get-all)
+      (sort-fn)
+      (response/response)
+      (response/content-type "application/json"))))
