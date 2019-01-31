@@ -1,6 +1,6 @@
 (ns records.parse
   (:require [clojure.string :as str])
-  (:import (java.io BufferedReader Reader)
+  (:import (java.io BufferedReader Reader InputStream)
            (clojure.lang ExceptionInfo)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -29,19 +29,19 @@
     (re-find #"," fields) #","
     :else #" "))
 
-(defn parse
+(defn parse-reader
   "Takes the string contents of a file and returns a vector of maps"
   [file-reader]
-  {:pre [(instance? Reader file-reader)]}
   (let [[fields & data-lines] (line-seq file-reader)
         delimiter (find-delimiter fields)] ;; lazy file read by line
     (map (partial line->map fields delimiter) data-lines)))
 
-(defn from-path
-  [path]
-  (with-open [rdr (clojure.java.io/reader path)]
+(defn parse
+  [source]
+  {:pre [(or (string? source) (instance? InputStream source))]}
+  (with-open [rdr (clojure.java.io/reader source)]
     (try
-      (doall (parse rdr))
+      (doall (parse-reader rdr))
       (catch ExceptionInfo e
         (ex-data e)))))
 

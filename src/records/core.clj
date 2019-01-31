@@ -25,7 +25,7 @@
 (defn -main
   [& args]
   (let [db (record/connect "memory")
-        _ (run! (comp (partial save! db) parse/from-path) args)
+        _ (run! (comp (partial save! db) parse/parse) args)
         data (record/get-all db)]
 
     (print-by-gender (render/data-by-gender data))

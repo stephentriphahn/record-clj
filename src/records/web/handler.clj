@@ -8,7 +8,7 @@
 (defn add-record
   [body]
   (let [db (record/connect "memory")
-        data (->> body io/reader parse/parse)]
+        data (parse/parse body)]
     (when data
       (record/save db data)
       (response/created ""))))
