@@ -12,13 +12,13 @@
       (handler/add-record (:body request)))
 
     (GET "/gender" []
-      (handler/get render/data-by-gender))
+      (handler/get-records-with render/data-by-gender))
 
     (GET "/birthdate" []
-      (handler/get render/data-by-dob))
+      (handler/get-records-with render/data-by-dob))
 
     (GET "/name" []
-      (handler/get render/data-by-lastname)))
+      (handler/get-records-with render/data-by-lastname)))
 
   (route/not-found "<h1>NOT FOUND</h1>"))
 

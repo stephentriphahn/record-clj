@@ -13,7 +13,7 @@
       (record/save db data)
       (response/created ""))))
 
-(defn get
+(defn get-records-with
   [sort-fn]
   (let [db (record/connect "memory")]
     (or
