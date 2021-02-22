@@ -1,3 +1,3 @@
-LastName FirstName Gender FavoriteColor DateOfBirth
-Doe Jane Female Red 1/16/1989
-Johnson Jim Male Gray 05/11/1974
+LastName FirstName Email FavoriteColor DateOfBirth
+Doe Jane test@test.com Red 1/16/1989
+Johnson Jim atest@test.com Gray 05/11/1974

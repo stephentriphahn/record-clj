@@ -2,8 +2,7 @@
   (:require [camel-snake-kebab.core :as csk]
             [clojure.string :as str]
             [clojure.spec.alpha :as spec])
-  (:import (java.io BufferedReader Reader InputStream)
-           (clojure.lang ExceptionInfo)))
+  (:import (java.io  InputStream)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;  Line parsing
@@ -24,10 +23,10 @@
 (defn find-delimiter
   "Given a string, finds which delimiter is being used.  Defaults to space,
    so any malformed data should fail during validation step of parsing."
-  [fields]
+  [line]
   (cond
-    (re-find #"\|" fields) #"\|"
-    (re-find #"," fields) #","
+    (re-find #"\|" line) #"\|"
+    (re-find #"," line) #","
     :else #" "))
 
 (defn- keywordize-fields

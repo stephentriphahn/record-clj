@@ -13,11 +13,11 @@
 
 (deftest add-record-handler-test
   (testing "Add valid record"
-    (let [test-str "LastName, FirstName, Gender, FavoriteColor, DateOfBirth
-         Smith, John, Male, Blue, 12/12/1966"
+    (let [test-str "LastName, FirstName, Email, FavoriteColor, DateOfBirth
+         Smith, John, test@test.com, Blue, 12/12/1966"
           test-input-stream (string->stream test-str)
           res (handler/add-record test-input-stream)]
-      (is (= 201 (:status res)) "Response status should be 200")
+      (is (= 201 (:status res)) "Response status should be 201")
       (is (get-in res [:headers "Location"]))))
 
   (testing "Invalid record DOB"
@@ -28,16 +28,16 @@
       (is (= 400 (:status res)) "Response status should be 400")
       (is (= "text/plain" (get-in res [:headers "Content-Type"])))))
 
-  (testing "Add invalid gender"
-    (let [test-str "LastName, FirstName, Gender, FavoriteColor, DateOfBirth
-         Smith, John, invalid-gender, Blue, 12/12/1966"
+  (testing "Add invalid email"
+    (let [test-str "LastName, FirstName, Email, FavoriteColor, DateOfBirth
+         Smith, John, invalid-email, Blue, 12/12/1966"
           test-input-stream (string->stream test-str)
           res (handler/add-record test-input-stream)]
       (is (= 400 (:status res)) "Response status should be 400")
       (is (= "text/plain" (get-in res [:headers "Content-Type"])))))
 
   (testing "Add invalid line count"
-    (let [test-str "LastName, FirstName, Gender, FavoriteColor, DateOfBirth
+    (let [test-str "LastName, FirstName, Email, FavoriteColor, DateOfBirth
          Smith, Male, Blue, 12/12/1966"
           test-input-stream (string->stream test-str)
           res (handler/add-record test-input-stream)]

@@ -1,2 +1,2 @@
-LastName, FirstName, Gender, FavoriteColor, DateOfBirth
-Smith, John, male, Blue, 15/03/1988
+LastName, FirstName, Email, FavoriteColor, DateOfBirth
+Smith, John, test@test.com, Blue, 15/03/1988

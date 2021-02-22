@@ -6,7 +6,7 @@
             [records.record :as record]
             [records.render :as render]
             [records.web.routes :as routes])
-  (:import (java.io Reader FileNotFoundException))
+  (:import (java.io FileNotFoundException))
   (:gen-class))
 
 (defn print-vals!
@@ -17,7 +17,8 @@
       (run! println results)
       (print "\n"))))
 
-(def print-by-gender (partial print-vals! "Sorted by Gender"))
+(def print-by-email
+  (partial print-vals! "Sorted by Email Descending, last name Ascending"))
 (def print-by-lastname (partial print-vals! "Sorted by Last Name"))
 (def print-by-dob (partial print-vals! "Sorted by Date of Birth"))
 
@@ -43,7 +44,7 @@
         _ (run! (comp (partial save! db) try-parse) args)
         data (record/get-all db)]
 
-    (print-by-gender (render/data-by-gender data))
+    (print-by-email (render/data-by-email data))
     (print-by-lastname (render/data-by-lastname data))
     (print-by-dob (render/data-by-dob data))
 

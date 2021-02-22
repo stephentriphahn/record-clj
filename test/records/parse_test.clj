@@ -8,7 +8,17 @@
 
 (declare thrown?) ;;appease IntelliJ
 
-(deftest parse-test
+(def fields ["LastName" "FirstName" "Email" "FavoriteColor" "DateOfBirth"])
+(def valid-sample-row ["Doe" "John" "jdoe@test.com" "blue" "10/3/1988"])
+(def invalid-dob-sample-row ["Doe" "John" "jdoe@test.com" "blue" "13/3/1988"])
+
+(defn gen-input-string
+  [delim & data-rows]
+  (let [headers (clojure.string/join delim fields)
+        data (map #(clojure.string/join delim %) data-rows)]
+    (clojure.string/join "\n" (conj data headers))))
+
+(deftest file-parse-test
   (testing "Nil source"
     (is (thrown? AssertionError (parse/parse nil))))
 
@@ -37,3 +47,15 @@
   (testing "File path that does not exist."
     (let [path "does/not/exist.csv"]
       (is (thrown? FileNotFoundException (parse/parse path))))))
+
+(deftest input-stream-parse-test
+  (testing "Valid data from input stream"
+    (let [stream (clojure.java.io/input-stream
+               (.getBytes (gen-input-string "," valid-sample-row)))
+          parsed (parse/parse stream)]
+      (is (every? #(spec/valid? :records.record/record %) parsed))))
+
+  (testing "Invalid data from input stream"
+    (let [stream (clojure.java.io/input-stream
+                   (.getBytes (gen-input-string "," invalid-dob-sample-row)))]
+      (is (thrown? AssertionError (parse/parse stream))))))

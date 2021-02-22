@@ -1,9 +1,7 @@
 (ns records.web.handler
-  (:require [clojure.java.io :as io]
-            [records.record :as record]
+  (:require [records.record :as record]
             [records.parse :as parse]
-            [ring.util.response :as response]
-            [records.render :as render]))
+            [ring.util.response :as response]))
 
 (def ^:Private bad-request-msg
   (str "Failed to parse data from your request.  "

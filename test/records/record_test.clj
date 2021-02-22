@@ -8,7 +8,7 @@
   (testing "valid record"
     (let [record {:first-name "Joe"
                   :last-name "Smith"
-                  :gender "Male"
+                  :email "test@test.com"
                   :date-of-birth "1/1/2000"
                   :favorite-color "Blue"}]
 
@@ -19,15 +19,8 @@
       (testing "date-of-birth"
         (is (= "1/1/2000" (record/date-of-birth record))))
 
-      (testing "gender"
-        (is (= "Male" (record/gender record))))))
-
-  (testing"invalid record"
-    (let [invalid-rec {:middle-name "Jeffrey"
-                       :date-of-birth "31/10/19"}]
-      (is (thrown? AssertionError (record/last-name invalid-rec)))
-      (is (thrown? AssertionError (record/date-of-birth invalid-rec)))
-      (is (thrown? AssertionError (record/gender invalid-rec))))))
+      (testing "email"
+        (is (= "test@test.com" (record/email record)))))))
 
 (deftest mem-db-test
 

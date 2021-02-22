@@ -10,7 +10,8 @@
                  [compojure "1.6.1"]
                  [ring/ring-core "1.7.0"]
                  [ring/ring-jetty-adapter "1.6.3"]
-                 [ring/ring-json "0.4.0"]]
+                 [ring/ring-json "0.4.0"]
+                 [ring-logger "1.0.1"]]
 
   :main ^:skip-aot records.core
   :target-path "target/%s"

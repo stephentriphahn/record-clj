@@ -3,6 +3,7 @@
             [compojure.route :as route]
             [records.web.handler :as handler]
             [records.render :as render]
+            [ring.logger :as logger]
             [ring.middleware.json :as json]))
 
 (defroutes routes
@@ -11,8 +12,8 @@
     (POST "/" request
       (handler/add-record (:body request)))
 
-    (GET "/gender" []
-      (handler/get-records-with render/data-by-gender))
+    (GET "/email" []
+      (handler/get-records-with render/data-by-email))
 
     (GET "/birthdate" []
       (handler/get-records-with render/data-by-dob))
@@ -25,4 +26,5 @@
 
 (def app
   (-> routes
-      json/wrap-json-response))
+    logger/wrap-with-logger
+    json/wrap-json-response))
