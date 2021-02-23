@@ -19,8 +19,10 @@
 
 (def print-by-email
   (partial print-vals! "Sorted by Email Descending, last name Ascending"))
-(def print-by-lastname (partial print-vals! "Sorted by Last Name"))
-(def print-by-dob (partial print-vals! "Sorted by Date of Birth"))
+(def print-by-lastname
+  (partial print-vals! "Sorted by Last Name Descending"))
+(def print-by-dob
+  (partial print-vals! "Sorted by Date of Birth"))
 
 (defn save!
   [db data]

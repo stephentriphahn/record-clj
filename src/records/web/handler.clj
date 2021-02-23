@@ -3,7 +3,7 @@
             [records.parse :as parse]
             [ring.util.response :as response]))
 
-(def ^:Private bad-request-msg
+(def ^:private bad-request-msg
   (str "Failed to parse data from your request.  "
         "Please make sure the data is in the proper format."))
 

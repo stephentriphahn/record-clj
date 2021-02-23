@@ -51,4 +51,3 @@
   {:pre [(or (string? source) (instance? InputStream source))]}
   (with-open [rdr (clojure.java.io/reader source)]
     (doall (parse-reader rdr))))
-

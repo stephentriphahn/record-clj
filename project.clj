@@ -6,7 +6,7 @@
 
   :dependencies [[org.clojure/clojure "1.10.0"]
 
-                 [camel-snake-kebab "0.4.0"]
+                 [camel-snake-kebab "0.4.2"]
                  [compojure "1.6.1"]
                  [ring/ring-core "1.7.0"]
                  [ring/ring-jetty-adapter "1.6.3"]
